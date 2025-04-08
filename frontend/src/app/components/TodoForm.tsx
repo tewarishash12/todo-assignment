@@ -2,27 +2,30 @@
 'use client';
 
 import { useState } from 'react';
-import { updateTodo } from '../lib/api';
+import { createTodo, updateTodo } from '../lib/api';
 import { useRouter } from 'next/navigation';
 import { Trash2 } from 'lucide-react'
 
 export default function TodoForm({ id, initial }: { id: string; initial: any }) {
     const router = useRouter();
-    const [title, setTitle] = useState(initial.title || '');
-    const [description, setDescription] = useState(initial.description || '');
+    const [title, setTitle] = useState(initial?.title || '');
+    const [description, setDescription] = useState(initial?.description || '');
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         try {
-            await updateTodo(id, { title, description });
+            if (id === 'new') {
+                await createTodo({ title, description });
+            } else {
+                await updateTodo(id, { title, description });
+            }
             router.push('/todos');
-            router.refresh();
+            router.refresh(); // refresh list
         } catch (error) {
-            console.error('Update failed:', error);
-            alert('Failed to update. Check console.');
+            console.error('Save failed:', error);
+            alert('Failed to save. Check console.');
         }
     };
-    
 
     return (
         <form onSubmit={handleSubmit} className="p-6 bg-white rounded-lg shadow max-w-3xl mx-auto space-y-4">

@@ -17,8 +17,8 @@ export async function fetchTodoById(id: string) {
     return res.data;
 }
 
-export async function createTodo() {
-    const res = await axios.post(`${BASE_URL}/todos`);
+export async function createTodo(data: { title: string; description: string }) {
+    const res = await axios.post(`${BASE_URL}/todos`, data);
     return res.data;
 }
 
