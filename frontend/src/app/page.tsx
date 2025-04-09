@@ -1,17 +1,29 @@
-// src/app/page.tsx
-import Link from 'next/link';
+'use client'
+
+import TodoLayout from '@/app/components/TodoLayout';
+import { fetchTodos } from '@/app/lib/api';
+import { useEffect, useState } from 'react';
+import { Todo } from './typecheck/typeCheck';
 
 export default function HomePage() {
-  return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Welcome to the Todo App</h1>
-        <Link href="/todos">
-          <a className="text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-200">
-            Go to Todos
-          </a>
-        </Link>
-      </div>
-    </main>
-  );
+  const [todo, setTodo] = useState<Todo[]>([]);
+  
+      useEffect(() => {
+          async function getTodos(){
+              try {
+                  const tasks = await fetchTodos();
+                  setTodo(tasks.todos);
+              } catch(err: unknown){
+                  if (err instanceof Error) {
+                      console.error("Failed to fetch todos:", err.message);
+                  } else {
+                      console.error("An unknown error occurred while fetching todos.");
+                  }
+              }
+          }
+  
+          getTodos();
+      }, []);
+
+  return <TodoLayout todos={todo || []} />;
 }
