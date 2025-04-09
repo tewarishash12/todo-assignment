@@ -6,7 +6,13 @@ import { fetchTodoById } from '@/app/lib/api';
 import TodoForm from '@/app/components/TodoForm';
 import { Todo } from '@/app/typecheck/typeCheck';
 
-export default function EditTodo({ params }: { params: { id: string } }) {
+type PageProps = {
+    params: {
+        id: string;
+    };
+};
+
+export default function EditTodo({ params }: PageProps) {
     const router = useRouter();
     const [todo, setTodo] = useState<Todo | null>(null);
 
