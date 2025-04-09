@@ -9,8 +9,23 @@ export default function TodosPage() {
     const [todos, setTodos] = useState<Todo[]>([]);
 
     useEffect(() => {
-        fetchTodos().then(setTodos).catch(console.error);
+        async function getTodos(){
+            try {
+                const tasks = await fetchTodos();
+                setTodos(tasks.todos);
+            } catch(err: unknown){
+                if (err instanceof Error) {
+                    console.error("Failed to fetch todos:", err.message);
+                } else {
+                    console.error("An unknown error occurred while fetching todos.");
+                }
+            }
+        }
+
+        getTodos();
     }, []);
+
+    console.log(todos)
 
     return <TodoLayout todos={todos} />;
 }
