@@ -24,5 +24,7 @@ export default function TodosPage() {
         getTodos();
     }, []);
 
+    console.log(todo);
+
     return <TodoLayout todos={todo} />;
 }
