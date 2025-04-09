@@ -1,14 +1,17 @@
-// src/components/TodoForm.tsx
 'use client';
 
 import { useState } from 'react';
 import { createTodo, updateTodo } from '../lib/api';
-import { useRouter } from 'next/navigation';
 import { Trash2 } from 'lucide-react';
 import { Todo } from '../typecheck/typeCheck';
 
-export default function TodoForm({ id, initial }: { id: string; initial: Todo | null }) {
-    const router = useRouter();
+interface TodoFormProps {
+    id: string;
+    initial: Todo | null;
+    onSave: () => void;
+}
+
+export default function TodoForm({ id, initial, onSave }: TodoFormProps) {
     const [title, setTitle] = useState(initial?.title || '');
     const [description, setDescription] = useState(initial?.description || '');
 
@@ -20,8 +23,7 @@ export default function TodoForm({ id, initial }: { id: string; initial: Todo | 
             } else {
                 await updateTodo(id, { title, description });
             }
-            router.push('/todos');
-            router.refresh(); // refresh list
+            onSave();
         } catch (error) {
             console.error('Save failed:', error);
             alert('Failed to save. Check console.');

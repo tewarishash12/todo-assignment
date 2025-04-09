@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import TodoForm from './TodoForm';
 import TodoNavbar from './TodoNavbar';
-import { fetchTodos } from '../lib/api'; // Make sure this import exists
+import { fetchTodos } from '../lib/api';
 import TodoCard from './TodoCard';
 import { Todo } from '../typecheck/typeCheck';
 
@@ -25,7 +25,7 @@ export default function TodoLayout({ todos }: { todos: TodosProps }) {
     const loadPage = async (page: number) => {
         const data = await fetchTodos(page, TASKS_PER_PAGE);
         setTasks(data.todos);
-        setHasNextPage(data.hasNextPage || data.todos.length === TASKS_PER_PAGE); // fallback
+        setHasNextPage(data.hasNextPage || data.todos.length === TASKS_PER_PAGE); 
     };
 
     useEffect(() => {
@@ -35,11 +35,15 @@ export default function TodoLayout({ todos }: { todos: TodosProps }) {
     const handleNext = () => setCurrentPage((prev) => prev + 1);
     const handlePrev = () => setCurrentPage((prev) => prev - 1);
 
+    const handleSave = () => {
+        loadPage(currentPage);
+        setSelectedTodo(null);
+    };
+
     return (
         <>
             <TodoNavbar />
             <div className="flex justify-around items-start h-[calc(100vh-60px)] w-full overflow-hidden bg-gray-200 px-4 py-6">
-                {/* Sidebar/List Panel */}
                 <aside className="w-[30%] max-w-[360px] bg-white border shadow-sm rounded-md h-full overflow-y-auto p-4">
                     <button
                         onClick={handleAddNewTask}
@@ -58,7 +62,6 @@ export default function TodoLayout({ todos }: { todos: TodosProps }) {
                         ))}
                     </div>
 
-                    {/* Pagination Controls */}
                     <div className="flex justify-between mt-auto">
                         <button
                             onClick={handlePrev}
@@ -77,9 +80,13 @@ export default function TodoLayout({ todos }: { todos: TodosProps }) {
                     </div>
                 </aside>
 
-                {/* Form Panel */}
                 <main className="w-[60%] h-full overflow-y-auto">
-                    <TodoForm key={selectedTodo?._id || 'new'} id={selectedTodo?._id ?? 'new'} initial={selectedTodo} />
+                    <TodoForm 
+                    key={selectedTodo?._id || 'new'} 
+                    id={selectedTodo?._id ?? 'new'} 
+                    initial={selectedTodo} 
+                    onSave={handleSave}
+                    />
                 </main>
             </div>
         </>
