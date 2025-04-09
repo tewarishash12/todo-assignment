@@ -2,11 +2,11 @@
 
 import TodoLayout from '@/app/components/TodoLayout';
 import { fetchTodos } from '@/app/lib/api';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Todo } from '../typecheck/typeCheck';
 
 export default function TodosPage() {
-    const [todos, setTodos] = useState<Todo[]>([]);
+    const [todo, setTodo] = useState<Todo[]>([]);
 
     useEffect(() => {
         async function getTodos(){
@@ -27,5 +27,5 @@ export default function TodosPage() {
 
     console.log(todos)
 
-    return <TodoLayout todos={todos} />;
+    return <TodoLayout todos={todo || []} />;
 }
