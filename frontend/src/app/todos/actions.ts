@@ -1,11 +1,12 @@
 'use server';
 
-import axios from "axios";
-
 export async function createTodoAction() {
-    const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/todos`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/todos`, {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
     });
 
-    return res.data;
+    if (!res.ok) throw new Error('Failed to create todo');
+    return await res.json();
 }
