@@ -1,8 +1,16 @@
+'use client'
+
 import TodoLayout from '@/app/components/TodoLayout';
 import { fetchTodos } from '@/app/lib/api';
+import { useEffect, useState } from 'react';
+import { Todo } from '../typecheck/typeCheck';
 
-export default async function TodosPage() {
-    const todos = await fetchTodos(); 
+export default function TodosPage() {
+    const [todos, setTodos] = useState<Todo[]>([]);
+
+    useEffect(() => {
+        fetchTodos().then(setTodos).catch(console.error);
+    }, []);
 
     return <TodoLayout todos={todos} />;
 }

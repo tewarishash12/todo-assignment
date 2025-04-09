@@ -11,9 +11,9 @@ interface TodosProps {
     todos: Todo[];
 }
 
-export default function TodoLayout({ todos }: { todos: TodosProps }) {
+export default function TodoLayout({ todos}: TodosProps ) {
     const [currentPage, setCurrentPage] = useState(1);
-    const [tasks, setTasks] = useState<Todo[]>(todos.todos || []);
+    const [tasks, setTasks] = useState<Todo[]>(todos || []);
     const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
     const [hasNextPage, setHasNextPage] = useState(false);
 
