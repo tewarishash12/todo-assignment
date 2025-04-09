@@ -12,5 +12,7 @@ export default function TodosPage() {
         fetchTodos().then(setTodos).catch(console.error);
     }, []);
 
+    console.log(todos)
+
     return <TodoLayout todos={todos} />;
 }
