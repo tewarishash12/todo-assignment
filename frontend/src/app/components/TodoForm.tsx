@@ -4,14 +4,15 @@
 import { useState } from 'react';
 import { createTodo, updateTodo } from '../lib/api';
 import { useRouter } from 'next/navigation';
-import { Trash2 } from 'lucide-react'
+import { Trash2 } from 'lucide-react';
+import { Todo } from '../typecheck/typeCheck';
 
-export default function TodoForm({ id, initial }: { id: string; initial: any }) {
+export default function TodoForm({ id, initial }: { id: string; initial: Todo | null }) {
     const router = useRouter();
     const [title, setTitle] = useState(initial?.title || '');
     const [description, setDescription] = useState(initial?.description || '');
 
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             if (id === 'new') {

@@ -3,11 +3,17 @@ import { useEffect, useState } from 'react';
 import TodoForm from './TodoForm';
 import TodoNavbar from './TodoNavbar';
 import { fetchTodos } from '../lib/api'; // Make sure this import exists
+import TodoCard from './TodoCard';
+import { Todo } from '../typecheck/typeCheck';
 
-export default function TodoLayout({ todos }: { todos: any }) {
+interface TodosProps {
+    todos: Todo[];
+}
+
+export default function TodoLayout({ todos }: { todos: TodosProps }) {
     const [currentPage, setCurrentPage] = useState(1);
-    const [tasks, setTasks] = useState<any[]>(todos.todos || []);
-    const [selectedTodo, setSelectedTodo] = useState<any>(null);
+    const [tasks, setTasks] = useState<Todo[]>(todos.todos || []);
+    const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
     const [hasNextPage, setHasNextPage] = useState(false);
 
     const TASKS_PER_PAGE = 10;
@@ -42,22 +48,13 @@ export default function TodoLayout({ todos }: { todos: any }) {
                         + Add New Task
                     </button>
                     <div className="flex flex-col gap-3 mb-4">
-                        {tasks.map((todo: any) => (
-                            <div
+                        {tasks.map((todo: Todo) => (
+                            <TodoCard
                                 key={todo._id}
-                                onClick={() => setSelectedTodo(todo)}
-                                className={`cursor-pointer rounded-lg p-4 border transition duration-200 ${
-                                    selectedTodo?._id === todo._id
-                                        ? 'border-black bg-gray-50'
-                                        : 'hover:bg-gray-50'
-                                }`}
-                            >
-                                <h2 className="text-sm font-semibold">{todo.title}</h2>
-                                <p className="text-xs text-gray-500 truncate">{todo.description}</p>
-                                <p className="text-xs text-gray-400 text-right mt-1">
-                                    {new Date(todo.createdAt).toLocaleDateString()}
-                                </p>
-                            </div>
+                                todo={todo}
+                                selectedTodo={selectedTodo}
+                                onSelect={setSelectedTodo}
+                            />
                         ))}
                     </div>
 
