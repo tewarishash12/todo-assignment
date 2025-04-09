@@ -20,6 +20,8 @@ export default function TodoForm({ id, initial, onSave }: TodoFormProps) {
         try {
             if (id === 'new') {
                 await createTodo({ title, description });
+                setTitle('');
+                setDescription('');
             } else {
                 await updateTodo(id, { title, description });
             }
