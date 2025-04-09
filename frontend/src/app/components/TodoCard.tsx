@@ -14,7 +14,7 @@ export default function TodoCard({ todo, selectedTodo, onSelect }: TodoCardProps
             onClick={() => onSelect(todo)}
             className={`cursor-pointer p-4 border rounded-lg shadow-sm transition-all duration-200 ${
                 isSelected
-                    ? 'border-black bg-gray-200' // Darker bg + solid black border for selected
+                    ? 'border-black bg-gray-200'
                     : 'border-gray-200 bg-white hover:bg-gray-100'
             }`}
         >

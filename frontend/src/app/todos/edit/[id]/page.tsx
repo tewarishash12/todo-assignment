@@ -8,7 +8,7 @@ import { Todo } from '@/app/typecheck/typeCheck';
 
 export default function EditTodo() {
     const router = useRouter();
-    const params = useParams(); // dynamically gets id from route
+    const params = useParams();
     const [todo, setTodo] = useState<Todo | null>(null);
 
     useEffect(() => {
