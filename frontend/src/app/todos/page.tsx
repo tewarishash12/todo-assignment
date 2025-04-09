@@ -2,7 +2,7 @@
 
 import TodoLayout from '@/app/components/TodoLayout';
 import { fetchTodos } from '@/app/lib/api';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Todo } from '../typecheck/typeCheck';
 
 export default function TodosPage() {
@@ -12,7 +12,7 @@ export default function TodosPage() {
         async function getTodos(){
             try {
                 const tasks = await fetchTodos();
-                setTodos(tasks.todos);
+                setTodo(tasks.todos);
             } catch(err: unknown){
                 if (err instanceof Error) {
                     console.error("Failed to fetch todos:", err.message);
@@ -25,7 +25,7 @@ export default function TodosPage() {
         getTodos();
     }, []);
 
-    console.log(todos)
+    console.log(todo)
 
     return <TodoLayout todos={todo || []} />;
 }
