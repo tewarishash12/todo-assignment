@@ -1,25 +1,21 @@
-import { useRouter } from 'next/navigation';
+'use client';
+
+import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { fetchTodoById } from '@/app/lib/api';
 import TodoForm from '@/app/components/TodoForm';
 import { Todo } from '@/app/typecheck/typeCheck';
 
-type PageProps = {
-    params: {
-        id: string;
-    };
-};
-
-export default function EditTodo({ params }: PageProps) {
+export default function EditTodo() {
     const router = useRouter();
+    const params = useParams(); // dynamically gets id from route
     const [todo, setTodo] = useState<Todo | null>(null);
 
     useEffect(() => {
-        const loadTodo = async () => {
-            const data = await fetchTodoById(params.id);
-            setTodo(data);
-        };
-        loadTodo();
+        const id = params.id;
+        if (typeof id === 'string') {
+            fetchTodoById(id).then(setTodo);
+        }
     }, [params.id]);
 
     if (!todo) {
@@ -30,7 +26,7 @@ export default function EditTodo({ params }: PageProps) {
         <main className="max-w-xl mx-auto py-10">
             <h1 className="text-2xl font-semibold mb-4">Edit Todo</h1>
             <TodoForm
-                id={params.id}
+                id={params.id as string}
                 initial={todo}
                 onSave={() => {
                     router.push('/todos');
