@@ -11,7 +11,7 @@ interface TodosProps {
     todos: Todo[];
 }
 
-export default function TodoLayout({ todos}: TodosProps ) {
+export default function TodoLayout({ todos }: TodosProps) {
     const [currentPage, setCurrentPage] = useState(1);
     const [tasks, setTasks] = useState<Todo[]>(todos || []);
     const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
@@ -50,11 +50,11 @@ export default function TodoLayout({ todos}: TodosProps ) {
                         onClick={handleAddNewTask}
                         className="mb-4 bg-black text-white p-2 rounded hover:bg-gray-800 flex items-center justify-center gap-2"
                     >
-                        <Image 
-                        src="/add-icon.svg"
-                        alt="todo-list"
-                        width={25}
-                        height={30}
+                        <Image
+                            src="/add-icon.svg"
+                            alt="todo-list"
+                            width={25}
+                            height={30}
                         />
                         Add New Task
                     </button>
