@@ -5,6 +5,7 @@ import TodoNavbar from './TodoNavbar';
 import { fetchTodos } from '../lib/api';
 import TodoCard from './TodoCard';
 import { Todo } from '../typecheck/typeCheck';
+import Image from 'next/image';
 
 interface TodosProps {
     todos: Todo[];
@@ -25,7 +26,7 @@ export default function TodoLayout({ todos }: { todos: TodosProps }) {
     const loadPage = async (page: number) => {
         const data = await fetchTodos(page, TASKS_PER_PAGE);
         setTasks(data.todos);
-        setHasNextPage(data.hasNextPage || data.todos.length === TASKS_PER_PAGE); 
+        setHasNextPage(data.hasNextPage || data.todos.length === TASKS_PER_PAGE);
     };
 
     useEffect(() => {
@@ -44,12 +45,18 @@ export default function TodoLayout({ todos }: { todos: TodosProps }) {
         <>
             <TodoNavbar />
             <div className="flex justify-around items-start h-[calc(100vh-60px)] w-full overflow-hidden bg-gray-200 px-4 py-6">
-                <aside className="w-[30%] max-w-[360px] bg-white border shadow-sm rounded-md h-full overflow-y-auto p-4">
+                <aside className="w-[30%] max-w-[360px] bg-gray-200 rounded-md h-full p-4 scroll-hidden">
                     <button
                         onClick={handleAddNewTask}
-                        className="mb-4 w-full bg-black text-white py-2 rounded hover:bg-gray-800"
+                        className="mb-4 bg-black text-white p-2 rounded hover:bg-gray-800 flex items-center justify-center gap-2"
                     >
-                        + Add New Task
+                        <Image 
+                        src="/add-icon.svg"
+                        alt="todo-list"
+                        width={25}
+                        height={30}
+                        />
+                        Add New Task
                     </button>
                     <div className="flex flex-col gap-3 mb-4">
                         {tasks.map((todo: Todo) => (
@@ -81,11 +88,11 @@ export default function TodoLayout({ todos }: { todos: TodosProps }) {
                 </aside>
 
                 <main className="w-[60%] h-full overflow-y-auto">
-                    <TodoForm 
-                    key={selectedTodo?._id || 'new'} 
-                    id={selectedTodo?._id ?? 'new'} 
-                    initial={selectedTodo} 
-                    onSave={handleSave}
+                    <TodoForm
+                        key={selectedTodo?._id || 'new'}
+                        id={selectedTodo?._id ?? 'new'}
+                        initial={selectedTodo}
+                        onSave={handleSave}
                     />
                 </main>
             </div>
