@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import TodoForm from './TodoForm';
 import TodoNavbar from './TodoNavbar';
 import { fetchTodos } from '../lib/api';
@@ -16,11 +16,13 @@ export default function TodoLayout({ todos }: TodosProps) {
     const [tasks, setTasks] = useState<Todo[]>(todos || []);
     const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
     const [hasNextPage, setHasNextPage] = useState(false);
+    const mainRef = useRef<HTMLDivElement>(null);
 
     const TASKS_PER_PAGE = 10;
 
     const handleAddNewTask = () => {
         setSelectedTodo(null);
+        scrollToMain();
     };
 
     const loadPage = async (page: number) => {
@@ -33,6 +35,12 @@ export default function TodoLayout({ todos }: TodosProps) {
         loadPage(currentPage);
     }, [currentPage]);
 
+    const scrollToMain = () => {
+        setTimeout(() => {
+            mainRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }, 50);
+    };
+
     const handleNext = () => setCurrentPage((prev) => prev + 1);
     const handlePrev = () => setCurrentPage((prev) => prev - 1);
 
@@ -44,11 +52,12 @@ export default function TodoLayout({ todos }: TodosProps) {
     return (
         <>
             <TodoNavbar />
-            <div className="flex justify-around items-start h-[calc(100vh-60px)] w-full overflow-hidden bg-gray-200 px-4 py-6">
-                <aside className="w-[30%] max-w-[360px] bg-gray-200 rounded-md h-full p-4 scroll-hidden">
+            <div className="flex flex-col md:flex-row justify-around items-start h-full min-h-screen w-full bg-gray-200 px-4 py-6 gap-4">
+                {/* ASIDE: Sidebar */}
+                <aside className="w-full md:w-[30%] max-w-[360px] bg-gray-200 rounded-md p-4 scroll-hidden">
                     <button
                         onClick={handleAddNewTask}
-                        className="mb-4 bg-black text-white p-2 rounded hover:bg-gray-800 flex items-center justify-center gap-2"
+                        className="mb-4 bg-black text-white p-2 rounded hover:bg-gray-800 flex items-center justify-center gap-2 w-full"
                     >
                         <Image
                             src="/add-icon.svg"
@@ -58,13 +67,17 @@ export default function TodoLayout({ todos }: TodosProps) {
                         />
                         Add New Task
                     </button>
+
                     <div className="flex flex-col gap-3 mb-4">
                         {tasks.map((todo: Todo) => (
                             <TodoCard
                                 key={todo._id}
                                 todo={todo}
                                 selectedTodo={selectedTodo}
-                                onSelect={setSelectedTodo}
+                                onSelect={(todo) => {
+                                    setSelectedTodo(todo);
+                                    scrollToMain();
+                                }}
                             />
                         ))}
                     </div>
@@ -87,7 +100,11 @@ export default function TodoLayout({ todos }: TodosProps) {
                     </div>
                 </aside>
 
-                <main className="w-[60%] h-full overflow-y-auto">
+                {/* MAIN: Form section */}
+                <main
+                    ref={mainRef}
+                    className="w-full md:w-[60%] h-full max-h-[100vh] overflow-y-auto bg-white p-4 rounded shadow-md"
+                >
                     <TodoForm
                         key={selectedTodo?._id || 'new'}
                         id={selectedTodo?._id ?? 'new'}

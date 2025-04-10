@@ -33,7 +33,7 @@ export default function TodoForm({ id, initial, onSave }: TodoFormProps) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="p-6 bg-white rounded-lg shadow max-w-3xl mx-auto space-y-4">
+        <form onSubmit={handleSubmit} className="py-6 bg-white max-w-3xl mx-auto space-y-4">
             <div className="flex justify-between items-start">
                 <input
                     className="text-2xl font-semibold text-gray-800 w-full focus:outline-none"
