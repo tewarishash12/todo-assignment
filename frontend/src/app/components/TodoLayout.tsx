@@ -36,10 +36,13 @@ export default function TodoLayout({ todos }: TodosProps) {
     }, [currentPage]);
 
     const scrollToMain = () => {
-        setTimeout(() => {
-            mainRef.current?.scrollIntoView({ behavior: 'smooth' });
-        }, 50);
+        if (window.innerWidth < 768) {
+            setTimeout(() => {
+                mainRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }, 50);
+        }
     };
+    
 
     const handleNext = () => setCurrentPage((prev) => prev + 1);
     const handlePrev = () => setCurrentPage((prev) => prev - 1);
